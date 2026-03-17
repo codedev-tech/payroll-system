@@ -1,0 +1,27 @@
+{
+  "name": "payroll-system-1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm run frontend",
+    "frontend": "npm run dev --prefix frontend",
+    "backend": "php backend/artisan serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codedev-tech/payroll-system.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/codedev-tech/payroll-system/issues"
+  },
+  "homepage": "https://github.com/codedev-tech/payroll-system#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
