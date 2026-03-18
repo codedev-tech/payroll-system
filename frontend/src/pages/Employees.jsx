@@ -5,7 +5,7 @@ const employees = [
   { name: 'Ferdinand Monde',    id: 102, department: 'Marketing',    status: 'On Leave',  salary: '₱ 32,500' },
   { name: 'Jerizz Dolosa',      id: 103, department: 'HR',           status: 'Inactive',  salary: '₱ 32,500' },
   { name: 'Fernandiz Ruwel',    id: 104, department: 'Finance',      status: 'Pending',   salary: '₱ 32,500' },
-  { name: 'Ethel Perez Gannad', id: 105, department: 'Engineering',  status: 'Paid',      salary: '₱ 32,500' },
+  { name: 'Leo Gannad', id: 105, department: 'Engineering',  status: 'Paid',      salary: '₱ 32,500' },
 ];
 
 const statusClass = {

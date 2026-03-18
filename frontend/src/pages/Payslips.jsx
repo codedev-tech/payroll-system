@@ -17,7 +17,7 @@ export default function Payslips() {
   ];
 
   return (
-    <div className="fade-in">
+    <div className="fade-in payslip-page">
       <div className="page-header mb-4">
         <h1 className="h3">Payslip</h1>
         <p className="text-muted">View payslip details</p>
@@ -43,7 +43,7 @@ export default function Payslips() {
             <div className="row g-4">
               {/* Employee Information */}
               <div className="col-12">
-                <div className="border rounded p-3 bg-light">
+                <div className="payslip-info-card border rounded p-3">
                   <h6 className="text-uppercase small fw-bold text-muted mb-3">Employee Information</h6>
                   <div className="row mb-2">
                     <div className="col-4 text-muted small">Position</div>

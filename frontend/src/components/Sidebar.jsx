@@ -8,15 +8,15 @@ const navItems = [
   { path: '/reports', label: 'Report', icon: <i className="bi bi-bar-chart-fill"></i> },
 ];
 
-export default function Sidebar({ isOpen, onClose }) {
+export default function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse }) {
   return (
-    <aside className={`sidebar ${isOpen ? 'open' : ''} h-100`}>
+    <aside className={`sidebar ${isOpen ? 'open' : ''} ${isCollapsed ? 'collapsed' : ''} h-100`}>
       <div className="sidebar__brand d-flex align-items-center justify-content-between">
-        <div className="d-flex align-items-center gap-2">
+        <div className="sidebar__brand-main d-flex align-items-center gap-2">
           <div className="sidebar__logo rounded-pill d-flex align-items-center justify-content-center bg-primary-subtle text-primary" style={{ width: '36px', height: '36px' }}>
             <i className="bi bi-layers-fill"></i>
           </div>
-          <h1 className="h6 mb-0 text-white fw-bold">Payroll</h1>
+          <h1 className="sidebar__brand-text h6 mb-0 text-white fw-bold"> <span className='pay'>Pay</span>roll</h1>
         </div>
         <button 
           className="btn btn-dark d-md-none p-1 border-0"
@@ -32,17 +32,29 @@ export default function Sidebar({ isOpen, onClose }) {
             to={item.path}
             end={item.path === '/'}
             onClick={onClose}
+            title={isCollapsed ? item.label : undefined}
             className={({ isActive }) =>
-              `sidebar__link d-flex align-items-center gap-3 px-3 py-2 rounded-3 text-decoration-none transition-all ${isActive ? 'active' : ''}`
+              `sidebar__link text-decoration-none ${isActive ? 'active' : ''}`
             }
           >
             <span className="icon d-flex align-items-center justify-content-center" style={{ width: '24px' }}>
               {item.icon}
             </span>
-            <span>{item.label}</span>
+            <span className="sidebar__label">{item.label}</span>
           </NavLink>
         ))}
       </nav>
+      <div className="sidebar__footer d-none d-md-block">
+        <button
+          type="button"
+          className="sidebar__collapse-btn"
+          onClick={onToggleCollapse}
+          aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        >
+          <i className="bi bi-layout-sidebar-inset"></i>
+          <span className="sidebar__collapse-text">{isCollapsed ? '>' : '<'}</span>
+        </button>
+      </div>
     </aside>
   );
 }
