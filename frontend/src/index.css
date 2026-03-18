@@ -44,6 +44,13 @@
   --accent-light: #e8eefb;
   --danger: #ef4444;
   --success: #10b981;
+
+  /* Badge Text Colors */
+  --badge-text-active: #065f46;
+  --badge-text-pending: #92400e;
+  --badge-text-inactive: #991b1b;
+  --badge-text-leave: #374151;
+  --badge-text-paid: #065f46;
 }
 
 /* ===== Reset ===== */
@@ -187,6 +194,10 @@ img {
 
   .mobile-header {
     height: 64px;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    color: var(--text-primary);
   }
 }
 
@@ -327,19 +338,46 @@ img {
 /* ===== Tables ===== */
 .data-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.table {
+  color: var(--text-primary);
+  background-color: transparent;
+}
+
+[data-theme='dark'] .table {
+  color: var(--text-primary);
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--text-primary);
+  --bs-table-border-color: var(--border-color);
+  --bs-table-striped-color: var(--text-primary);
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.05);
+  --bs-table-active-color: var(--text-primary);
+  --bs-table-active-bg: rgba(255, 255, 255, 0.1);
+  --bs-table-hover-color: var(--text-primary);
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .table-light {
+  --bs-table-bg: var(--sidebar-hover);
+  --bs-table-color: var(--text-primary);
+  --bs-table-border-color: var(--border-color);
+}
+
+.table th, .table td {
+  border-color: var(--border-color);
 }
 
 .data-table thead th {
-  padding: 12px 16px;
   text-align: left;
+  padding: 12px 16px;
   font-size: 12px;
   font-weight: 600;
-  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border-bottom: 2px solid var(--border-color);
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--border-light);
   white-space: nowrap;
 }
 
@@ -356,7 +394,7 @@ img {
 }
 
 .data-table tbody tr:hover {
-  background: #f9fafb;
+  background: var(--border-light);
 }
 
 .data-table tbody tr:last-child td {
@@ -376,27 +414,27 @@ img {
 
 .badge--active {
   background: var(--status-active-bg);
-  color: #065f46;
+  color: var(--badge-text-active);
 }
 
 .badge--pending {
   background: var(--status-pending-bg);
-  color: #92400e;
+  color: var(--badge-text-pending);
 }
 
 .badge--inactive {
   background: var(--status-inactive-bg);
-  color: #991b1b;
+  color: var(--badge-text-inactive);
 }
 
 .badge--leave {
   background: var(--status-leave-bg);
-  color: #374151;
+  color: var(--badge-text-leave);
 }
 
 .badge--paid {
   background: var(--status-paid-bg);
-  color: #065f46;
+  color: var(--badge-text-paid);
 }
 
 /* ===== Buttons ===== */

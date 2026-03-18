@@ -8,9 +8,9 @@ const navItems = [
   { path: '/reports', label: 'Report', icon: <i className="bi bi-bar-chart-fill"></i> },
 ];
 
-export default function Sidebar({ isOpen, onClose }) {
+export default function Sidebar({ isOpen, onClose, onToggleTheme }) {
   return (
-    <aside className={`sidebar ${isOpen ? 'open' : ''} h-100`}>
+    <aside className={`sidebar ${isOpen ? 'open' : ''} h-100 d-flex flex-column`}>
       <div className="sidebar__brand d-flex align-items-center justify-content-between">
         <div className="d-flex align-items-center gap-2">
           <div className="sidebar__logo rounded-pill d-flex align-items-center justify-content-center bg-primary-subtle text-primary" style={{ width: '36px', height: '36px' }}>
@@ -25,7 +25,7 @@ export default function Sidebar({ isOpen, onClose }) {
           <i className="bi bi-x-lg text-white"></i>
         </button>
       </div>
-      <nav className="sidebar__nav mt-3">
+      <nav className="sidebar__nav mt-3 flex-grow-1">
         {navItems.map(item => (
           <NavLink
             key={item.path}
@@ -43,6 +43,18 @@ export default function Sidebar({ isOpen, onClose }) {
           </NavLink>
         ))}
       </nav>
+
+      <div className="sidebar__footer p-3 mt-auto border-top border-secondary border-opacity-25">
+        <button 
+          className="btn sidebar__link w-100 d-flex align-items-center gap-3 px-3 py-2 rounded-3 text-decoration-none border-0"
+          onClick={onToggleTheme}
+        >
+          <span className="icon d-flex align-items-center justify-content-center" style={{ width: '24px' }}>
+            <i className="bi bi-moon-stars"></i>
+          </span>
+          <span>Dark Mode</span>
+        </button>
+      </div>
     </aside>
   );
 }
