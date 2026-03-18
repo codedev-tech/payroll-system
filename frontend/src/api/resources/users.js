@@ -2,8 +2,8 @@ import BaseResource from './base';
 
 /**
  * User resource following Step 1: No verbs in URLs
- * ❌ /api/v1/get-users
- * ✅ /api/v1/users (GET)
+ * INCORRECT: /api/v1/get-users
+ * CORRECT: /api/v1/users (GET)
  */
 class UserResource extends BaseResource {
   constructor() {
@@ -11,8 +11,8 @@ class UserResource extends BaseResource {
   }
 
   // Example of a specialized resource action
-  // ❌ /api/v1/users/1/deactivate-user
-  // ✅ /api/v1/users/1/status (PATCH with data) OR just a PATCH on users/1
+  // INCORRECT: /api/v1/users/1/deactivate-user
+  // CORRECT: /api/v1/users/1/status (PATCH with data) OR just a PATCH on users/1
   deactivate(id) {
     return this.patch(id, { status: 'inactive' });
   }

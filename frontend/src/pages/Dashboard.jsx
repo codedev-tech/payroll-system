@@ -1,9 +1,9 @@
 export default function Dashboard() {
   const stats = [
-    { label: 'Total Employees', value: '156', icon: '👥', color: 'blue' },
-    { label: 'Total Payroll', value: '₱2,450,000', icon: '💰', color: 'green' },
-    { label: 'Pending Payroll', value: '₱380,000', icon: '⏳', color: 'orange' },
-    { label: 'Active Employees', value: '142', icon: '✓', color: 'green' },
+    { label: 'Total Employees', value: '156', icon: <i className="bi bi-people"></i>, color: 'blue' },
+    { label: 'Total Payroll', value: '₱2,450,000', icon: <i className="bi bi-cash-stack"></i>, color: 'green' },
+    { label: 'Pending Payroll', value: '₱380,000', icon: <i className="bi bi-clock-history"></i>, color: 'orange' },
+    { label: 'Active Employees', value: '142', icon: <i className="bi bi-check-circle"></i>, color: 'green' },
   ];
 
   const recentActivity = [
@@ -16,47 +16,58 @@ export default function Dashboard() {
 
   return (
     <div className="fade-in">
-      <div className="page-header">
-        <h1>Dashboard</h1>
-        <p>Welcome back! Here's your payroll overview.</p>
+      <div className="page-header mb-4">
+        <h1 className="h3">Dashboard</h1>
+        <p className="text-muted">Welcome back! Here's your payroll overview.</p>
       </div>
+      
       <div className="page-body">
-        <div className="stat-cards">
+        {/* Stats Row */}
+        <div className="row g-4 mb-4">
           {stats.map((stat, i) => (
-            <div className="stat-card card--clickable" key={i}>
-              <div className="stat-card__info">
-                <span className="stat-card__label">{stat.label}</span>
-                <span className="stat-card__value">{stat.value}</span>
-              </div>
-              <div className={`stat-card__icon stat-card__icon--${stat.color}`}>
-                {stat.icon}
+            <div className="col-12 col-sm-6 col-xl-3" key={i}>
+              <div className="stat-card card--clickable h-100 border-0 shadow-sm">
+                <div className="stat-card__info">
+                  <span className="stat-card__label text-uppercase small text-muted">{stat.label}</span>
+                  <span className="stat-card__value h2 mb-0">{stat.value}</span>
+                </div>
+                <div className={`stat-card__icon stat-card__icon--${stat.color} rounded-3 p-3`}>
+                  {stat.icon}
+                </div>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="card">
-          <h2 className="section-title">Recent Activity</h2>
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Employee</th>
-                <th>Action</th>
-                <th>Date</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentActivity.map((item, i) => (
-                <tr key={i}>
-                  <td style={{ fontWeight: 500 }}>{item.employee}</td>
-                  <td>{item.action}</td>
-                  <td>{item.date}</td>
-                  <td style={{ fontWeight: 600 }}>{item.amount}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {/* Activity Row */}
+        <div className="row">
+          <div className="col-12">
+            <div className="card border-0 shadow-sm">
+              <h2 className="section-title h5 mb-4">Recent Activity</h2>
+              <div className="table-responsive">
+                <table className="data-table table table-hover align-middle mb-0">
+                  <thead>
+                    <tr>
+                      <th className="border-top-0">Employee</th>
+                      <th className="border-top-0">Action</th>
+                      <th className="border-top-0">Date</th>
+                      <th className="border-top-0 text-end">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {recentActivity.map((item, i) => (
+                      <tr key={i}>
+                        <td className="fw-medium text-dark">{item.employee}</td>
+                        <td className="text-secondary">{item.action}</td>
+                        <td className="text-secondary">{item.date}</td>
+                        <td className="fw-bold text-end">{item.amount}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

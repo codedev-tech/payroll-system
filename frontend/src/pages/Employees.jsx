@@ -26,57 +26,70 @@ export default function Employees() {
 
   return (
     <div className="fade-in">
-      <div className="page-header">
-        <h1>Employee</h1>
-        <p>Manage your workforce</p>
+      <div className="page-header mb-4">
+        <h1 className="h3">Employee</h1>
+        <p className="text-muted">Manage your workforce</p>
       </div>
+
       <div className="page-body">
-        <div className="card">
-          <div className="search-bar">
-            <div className="search-bar__wrapper">
-              <span className="search-bar__icon">🔍</span>
+        <div className="card border-0 shadow-sm w-100">
+          <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+            <div className="search-bar__wrapper flex-grow-1" style={{ maxWidth: '400px' }}>
+              <span className="search-bar__icon">
+                <i className="bi bi-search"></i>
+              </span>
               <input
-                className="search-bar__input"
+                className="form-control ps-5"
                 type="text"
                 placeholder="Search employees..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
             </div>
-            <button className="btn btn--primary btn--sm">+ Add Employee</button>
+            <button className="btn btn-primary d-flex align-items-center py-2 px-3">
+              <i className="bi bi-plus-lg me-2"></i>
+              Add Employee
+            </button>
           </div>
 
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Employee Name</th>
-                <th>ID</th>
-                <th>Department</th>
-                <th>Status ▼</th>
-                <th>Salary</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((emp) => (
-                <tr key={emp.id}>
-                  <td style={{ fontWeight: 500 }}>{emp.name}</td>
-                  <td>{emp.id}</td>
-                  <td>{emp.department}</td>
-                  <td>
-                    <span className={`badge ${statusClass[emp.status]}`}>
-                      {emp.status}
-                    </span>
-                  </td>
-                  <td style={{ fontWeight: 600 }}>{emp.salary}</td>
-                </tr>
-              ))}
-              {filtered.length === 0 && (
+          <div className="table-responsive">
+            <table className="table table-hover align-middle mb-0">
+              <thead className="table-light">
                 <tr>
-                  <td colSpan={5} className="empty-state">No employees found.</td>
+                  <th className="border-0 py-3">Employee Name</th>
+                  <th className="border-0 py-3">ID</th>
+                  <th className="border-0 py-3">Department</th>
+                  <th className="border-0 py-3">
+                    Status
+                    <i className="bi bi-chevron-down ms-1 small opacity-50"></i>
+                  </th>
+                  <th className="border-0 py-3 text-end">Salary</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filtered.map((emp) => (
+                  <tr key={emp.id}>
+                    <td className="fw-medium text-dark">{emp.name}</td>
+                    <td className="text-secondary">{emp.id}</td>
+                    <td className="text-secondary">{emp.department}</td>
+                    <td>
+                      <span className={`badge rounded-pill ${statusClass[emp.status]}`}>
+                        {emp.status}
+                      </span>
+                    </td>
+                    <td className="fw-bold text-end">{emp.salary}</td>
+                  </tr>
+                ))}
+                {filtered.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="text-center py-5 text-muted">
+                      No employees found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

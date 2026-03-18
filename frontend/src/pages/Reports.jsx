@@ -27,99 +27,107 @@ const statusClass = {
 export default function Reports() {
   return (
     <div className="fade-in">
-      <div className="page-header">
-        <h1>Reports</h1>
-        <p>Insights and analytics for your payroll</p>
+      <div className="page-header mb-4">
+        <h1 className="h3">Reports</h1>
+        <p className="text-muted">Insights and analytics for your payroll</p>
       </div>
+
       <div className="page-body">
         {/* Charts Row */}
-        <div className="chart-container">
+        <div className="row g-4 mb-4">
           {/* Bar Chart Card */}
-          <div className="card">
-            <h2 className="section-title">Payroll Expenses</h2>
-            <div className="bar-chart">
-              {barData.map((d, i) => (
-                <div
-                  className="bar-chart__bar"
-                  key={i}
-                  style={{ height: `${(d.value / maxBar) * 100}%` }}
-                  title={`${d.label}: ₱${d.value.toLocaleString()}`}
-                />
-              ))}
-            </div>
-            <div className="bar-chart__label">
-              {barData.map((d, i) => (
-                <span key={i}>{d.label}</span>
-              ))}
+          <div className="col-12 col-xl-7">
+            <div className="card border-0 shadow-sm h-100">
+              <h2 className="section-title h6 mb-4">Payroll Expenses</h2>
+              <div className="bar-chart d-flex align-items-end gap-2" style={{ height: '220px' }}>
+                {barData.map((d, i) => (
+                  <div className="flex-grow-1 d-flex flex-column align-items-center" key={i}>
+                    <div
+                      className="bar-chart__bar w-100 rounded-top"
+                      style={{ 
+                        height: `${(d.value / maxBar) * 100}%`,
+                        background: 'linear-gradient(to top, var(--accent), #6a92e8)'
+                      }}
+                      title={`${d.label}: ₱${d.value.toLocaleString()}`}
+                    />
+                    <span className="small text-muted mt-2" style={{ fontSize: '10px' }}>{d.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Pie Chart Card */}
-          <div className="card">
-            <h2 className="section-title">Department Cost</h2>
-            <div
-              className="pie-chart"
-              style={{
-                background: `conic-gradient(
-                  #4a77d4 0% 35%,
-                  #10b981 35% 60%,
-                  #f59e0b 60% 80%,
-                  #ef4444 80% 100%
-                )`,
-              }}
-            />
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '16px',
-              marginTop: '16px',
-              flexWrap: 'wrap'
-            }}>
-              {[
-                { label: 'Engineering', color: '#4a77d4' },
-                { label: 'Marketing', color: '#10b981' },
-                { label: 'HR', color: '#f59e0b' },
-                { label: 'Finance', color: '#ef4444' },
-              ].map((item, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px' }}>
-                  <div style={{
-                    width: '10px',
-                    height: '10px',
-                    borderRadius: '50%',
-                    background: item.color,
-                  }} />
-                  <span style={{ color: 'var(--text-secondary)' }}>{item.label}</span>
-                </div>
-              ))}
+          <div className="col-12 col-xl-5">
+            <div className="card border-0 shadow-sm h-100">
+              <h2 className="section-title h6 mb-4">Department Cost</h2>
+              <div
+                className="pie-chart mx-auto"
+                style={{
+                  width: '180px',
+                  height: '180px',
+                  borderRadius: '50%',
+                  background: `conic-gradient(
+                    #4a77d4 0% 35%,
+                    #10b981 35% 60%,
+                    #f59e0b 60% 80%,
+                    #ef4444 80% 100%
+                  )`,
+                }}
+              />
+              <div className="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+                {[
+                  { label: 'Engineering', color: '#4a77d4' },
+                  { label: 'Marketing', color: '#10b981' },
+                  { label: 'HR', color: '#f59e0b' },
+                  { label: 'Finance', color: '#ef4444' },
+                ].map((item, i) => (
+                  <div key={i} className="d-flex align-items-center gap-2 small">
+                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: item.color }} />
+                    <span className="text-secondary">{item.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
         {/* Monthly Payroll Report Table */}
-        <div className="card">
-          <h2 className="section-title">Monthly Payroll Report</h2>
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Month</th>
-                <th>Total Payroll</th>
-                <th>Status ▼</th>
-                <th>Taxes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {monthlyReport.map((row, i) => (
-                <tr key={i}>
-                  <td style={{ fontWeight: 500 }}>{row.month}</td>
-                  <td>{row.total}</td>
-                  <td>
-                    <span className={`badge ${statusClass[row.status]}`}>{row.status}</span>
-                  </td>
-                  <td>{row.taxes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="row">
+          <div className="col-12">
+            <div className="card border-0 shadow-sm">
+              <h2 className="section-title h6 mb-4">Monthly Payroll Report</h2>
+              <div className="table-responsive">
+                <table className="table table-hover align-middle mb-0">
+                  <thead className="table-light">
+                    <tr>
+                      <th className="border-0 py-3">Month</th>
+                      <th className="border-0 py-3">Total Payroll</th>
+                      <th className="border-0 py-3 text-center">
+                        Status
+                        <i className="bi bi-chevron-down ms-1 small opacity-50"></i>
+                      </th>
+                      <th className="border-0 py-3 text-end">Taxes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {monthlyReport.map((row, i) => (
+                      <tr key={i}>
+                        <td className="fw-medium text-dark">{row.month}</td>
+                        <td className="text-secondary">{row.total}</td>
+                        <td className="text-center">
+                          <span className={`badge rounded-pill ${statusClass[row.status] || 'bg-light text-dark'}`}>
+                            {row.status}
+                          </span>
+                        </td>
+                        <td className="text-end fw-bold">{row.taxes}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

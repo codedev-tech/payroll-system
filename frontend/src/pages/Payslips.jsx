@@ -18,84 +18,90 @@ export default function Payslips() {
 
   return (
     <div className="fade-in">
-      <div className="page-header">
-        <h1>Reports</h1>
-        <p>View payslip details</p>
+      <div className="page-header mb-4">
+        <h1 className="h3">Payslip</h1>
+        <p className="text-muted">View payslip details</p>
       </div>
       <div className="page-body">
-        <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+        <div className="card border-0 shadow-sm overflow-hidden p-0 w-100">
           {/* Header */}
-          <div className="payslip-header">
-            <div className="payslip-header__info">
-              <div className="payslip-header__avatar">👤</div>
-              <span className="payslip-header__name">{employee.name}</span>
+          <div className="payslip-header d-flex align-items-center justify-content-between px-4 py-3 bg-dark text-white">
+            <div className="payslip-header__info d-flex align-items-center gap-3">
+              <div className="payslip-header__avatar rounded-circle bg-secondary d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px' }}>
+                <i className="bi bi-person-fill"></i>
+              </div>
+              <span className="payslip-header__name fw-bold">{employee.name}</span>
             </div>
-            <button className="btn btn--primary btn--sm">
-              📥 Download PDF
+            <button className="btn btn-primary d-flex align-items-center gap-2 px-3">
+              <i className="bi bi-download"></i>
+              <span>Download PDF</span>
             </button>
           </div>
 
           {/* Body */}
-          <div style={{ padding: '24px' }}>
-            {/* Employee Information */}
-            <fieldset className="fieldset">
-              <legend className="fieldset__legend">Employee Information</legend>
-              <div className="fieldset__row">
-                <span className="fieldset__label">Position</span>
-                <span className="fieldset__value">{employee.position}</span>
-              </div>
-              <div className="fieldset__row">
-                <span className="fieldset__label">Employee ID</span>
-                <span className="fieldset__value">{employee.id}</span>
-              </div>
-              <div className="fieldset__row">
-                <span className="fieldset__label">Pay Period</span>
-                <span className="fieldset__value">{employee.payPeriod}</span>
-              </div>
-            </fieldset>
-
-            {/* Earnings */}
-            <fieldset className="fieldset">
-              <legend className="fieldset__legend">Earnings</legend>
-              {earnings.map((item, i) => (
-                <div className="fieldset__row" key={i}>
-                  <span className="fieldset__label">{item.label}</span>
-                  <span className="fieldset__value" style={{ fontWeight: 600 }}>{item.amount}</span>
+          <div className="p-4">
+            <div className="row g-4">
+              {/* Employee Information */}
+              <div className="col-12">
+                <div className="border rounded p-3 bg-light">
+                  <h6 className="text-uppercase small fw-bold text-muted mb-3">Employee Information</h6>
+                  <div className="row mb-2">
+                    <div className="col-4 text-muted small">Position</div>
+                    <div className="col-8 fw-medium">{employee.position}</div>
+                  </div>
+                  <div className="row mb-2">
+                    <div className="col-4 text-muted small">Employee ID</div>
+                    <div className="col-8 fw-medium">{employee.id}</div>
+                  </div>
+                  <div className="row">
+                    <div className="col-4 text-muted small">Pay Period</div>
+                    <div className="col-8 fw-medium">{employee.payPeriod}</div>
+                  </div>
                 </div>
-              ))}
-            </fieldset>
+              </div>
 
-            {/* Deductions */}
-            <fieldset className="fieldset">
-              <legend className="fieldset__legend">Deduction</legend>
-              {deductions.map((item, i) => (
-                <div className="fieldset__row" key={i}>
-                  <span className="fieldset__label">{item.label}</span>
-                  <span className="fieldset__value" style={{ fontWeight: 600 }}>{item.amount}</span>
+              {/* Earnings */}
+              <div className="col-12 col-md-6">
+                <div className="border rounded p-3 h-100">
+                  <h6 className="text-uppercase small fw-bold text-muted mb-3 text-success">Earnings</h6>
+                  {earnings.map((item, i) => (
+                    <div className="d-flex justify-content-between mb-2 pb-2 border-bottom border-light" key={i}>
+                      <span className="text-secondary small">{item.label}</span>
+                      <span className="fw-bold">{item.amount}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </fieldset>
+              </div>
+
+              {/* Deductions */}
+              <div className="col-12 col-md-6">
+                <div className="border rounded p-3 h-100">
+                  <h6 className="text-uppercase small fw-bold text-muted mb-3 text-danger">Deductions</h6>
+                  {deductions.map((item, i) => (
+                    <div className="d-flex justify-content-between mb-2 pb-2 border-bottom border-light" key={i}>
+                      <span className="text-secondary small">{item.label}</span>
+                      <span className="fw-bold">{item.amount}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
 
             {/* Summary */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              gap: '32px',
-              paddingTop: '12px',
-              borderTop: '2px solid var(--border-color)',
-              marginTop: '8px'
-            }}>
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>TOTAL EARNINGS</div>
-                <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--success)' }}>₱ 33,750</div>
-              </div>
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>TOTAL DEDUCTIONS</div>
-                <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--danger)' }}>₱ 2,730</div>
-              </div>
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>NET PAY</div>
-                <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)' }}>₱ 31,020</div>
+            <div className="row mt-5 pt-4 border-top">
+              <div className="col-12 d-flex flex-wrap justify-content-end gap-5">
+                <div className="text-end">
+                  <div className="text-uppercase small text-muted mb-1">Total Earnings</div>
+                  <div className="h4 fw-bold text-success">₱ 33,750</div>
+                </div>
+                <div className="text-end">
+                  <div className="text-uppercase small text-muted mb-1">Total Deductions</div>
+                  <div className="h4 fw-bold text-danger">₱ 2,730</div>
+                </div>
+                <div className="text-end">
+                  <div className="text-uppercase small text-muted mb-1">Net Pay</div>
+                  <div className="h4 fw-bold text-primary">₱ 31,020</div>
+                </div>
               </div>
             </div>
           </div>
