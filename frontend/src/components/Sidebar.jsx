@@ -25,7 +25,7 @@ export default function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse
           <i className="bi bi-x-lg text-white"></i>
         </button>
       </div>
-      <nav className="sidebar__nav mt-3">
+      <nav className="sidebar__nav mt-3 flex-grow-1">
         {navItems.map(item => (
           <NavLink
             key={item.path}

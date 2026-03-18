@@ -39,6 +39,11 @@
   --accent-light: #edf3ff;
   --danger: #e04444;
   --success: #16b668;
+  --badge-text-active: #065f46;
+  --badge-text-pending: #92400e;
+  --badge-text-inactive: #991b1b;
+  --badge-text-leave: #374151;
+  --badge-text-paid: #065f46;
 }
 
 *,
@@ -739,8 +744,35 @@ img {
 
 .data-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.table {
+  color: var(--text-primary);
+  background-color: transparent;
+}
+
+[data-theme='dark'] .table {
+  color: var(--text-primary);
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--text-primary);
+  --bs-table-border-color: var(--border-color);
+  --bs-table-striped-color: var(--text-primary);
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.05);
+  --bs-table-active-color: var(--text-primary);
+  --bs-table-active-bg: rgba(255, 255, 255, 0.1);
+  --bs-table-hover-color: var(--text-primary);
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .table-light {
+  --bs-table-bg: var(--sidebar-hover);
+  --bs-table-color: var(--text-primary);
+  --bs-table-border-color: var(--border-color);
+}
+
+.table th, .table td {
+  border-color: var(--border-color);
 }
 
 .data-table thead th {
@@ -769,7 +801,7 @@ img {
 }
 
 .data-table tbody tr:hover {
-  background: #f8fbff;
+  background: var(--border-light);
 }
 
 .data-table tbody tr:last-child td {
@@ -788,27 +820,27 @@ img {
 
 .badge--active {
   background: var(--status-active-bg);
-  color: #065f46;
+  color: var(--badge-text-active);
 }
 
 .badge--pending {
   background: var(--status-pending-bg);
-  color: #92400e;
+  color: var(--badge-text-pending);
 }
 
 .badge--inactive {
   background: var(--status-inactive-bg);
-  color: #991b1b;
+  color: var(--badge-text-inactive);
 }
 
 .badge--leave {
   background: var(--status-leave-bg);
-  color: #3d566f;
+  color: var(--badge-text-leave);
 }
 
 .badge--paid {
   background: var(--status-paid-bg);
-  color: #166534;
+  color: var(--badge-text-paid);
 }
 
 .btn {
