@@ -10,6 +10,7 @@ const barData = [
 ];
 
 const maxBar = Math.max(...barData.map(d => d.value));
+const yAxisTicks = [2000, 1800, 1600, 1400, 1200, 1000, 800, 600, 400, 200, 0];
 
 const monthlyReport = [
   { month: 'January',  total: '₱ 123,456', status: 'Paid',    taxes: '₱ 10,289' },
@@ -39,20 +40,31 @@ export default function Reports() {
           <div className="col-12 col-xl-7">
             <div className="card border-0 shadow-sm h-100">
               <h2 className="section-title h6 mb-4">Payroll Expenses</h2>
-              <div className="bar-chart d-flex align-items-end gap-2" style={{ height: '220px' }}>
-                {barData.map((d, i) => (
-                  <div className="flex-grow-1 d-flex flex-column align-items-center" key={i}>
-                    <div
-                      className="bar-chart__bar w-100 rounded-top"
-                      style={{ 
-                        height: `${(d.value / maxBar) * 100}%`,
-                        background: 'linear-gradient(to top, var(--accent), #6a92e8)'
-                      }}
-                      title={`${d.label}: ₱${d.value.toLocaleString()}`}
-                    />
-                    <span className="small text-muted mt-2" style={{ fontSize: '10px' }}>{d.label}</span>
+              <div className="payroll-expenses-chart" role="img" aria-label="Payroll expenses by month">
+                <div className="payroll-expenses-chart__y-axis">
+                  <span className="payroll-expenses-chart__y-title">Number of issues identified</span>
+                  <div className="payroll-expenses-chart__ticks">
+                    {yAxisTicks.map((tick) => (
+                      <span key={tick}>{tick}</span>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                <div className="payroll-expenses-chart__plot-area">
+                  <div className="bar-chart" style={{ height: '220px' }}>
+                    {barData.map((d, i) => (
+                      <div className="bar-chart__column" key={i}>
+                        <div
+                          className="bar-chart__bar"
+                          style={{ height: `${(d.value / maxBar) * 100}%` }}
+                          title={`${d.label}: ₱${d.value.toLocaleString()}`}
+                        />
+                        <span className="bar-chart__month">{d.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="payroll-expenses-chart__x-title">Months of the year</div>
+                </div>
               </div>
             </div>
           </div>

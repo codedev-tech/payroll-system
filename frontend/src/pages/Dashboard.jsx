@@ -10,7 +10,7 @@ export default function Dashboard() {
     { employee: 'Juan Dela Cruz', action: 'Payroll processed', date: 'Mar 15, 2026', amount: '₱32,500' },
     { employee: 'Ferdinand Monde', action: 'Salary updated', date: 'Mar 14, 2026', amount: '₱35,000' },
     { employee: 'Jerizz Dolosa', action: 'New hire onboarded', date: 'Mar 13, 2026', amount: '₱28,000' },
-    { employee: 'Ethel Perez Gannad', action: 'Bonus issued', date: 'Mar 12, 2026', amount: '₱5,000' },
+    { employee: 'Leo Gannad', action: 'Bonus issued', date: 'Mar 12, 2026', amount: '₱5,000' },
     { employee: 'Fernandiz Ruwel', action: 'Deduction updated', date: 'Mar 11, 2026', amount: '₱1,500' },
   ];
 

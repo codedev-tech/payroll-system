@@ -970,19 +970,39 @@ img {
 .bar-chart {
   display: flex;
   align-items: flex-end;
-  gap: 10px;
-  height: 180px;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  height: 220px;
+  border-left: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
   padding: 0 8px;
 }
 
 .bar-chart__bar {
-  flex: 1;
-  background: linear-gradient(180deg, #4f7fd3, #315da7);
-  border-radius: 4px 4px 0 0;
+  width: 100%;
+  max-width: 22px;
+  background: var(--accent);
+  border-radius: 2px 2px 0 0;
   position: relative;
-  min-width: 28px;
+  min-width: 16px;
   transition: transform 0.2s ease, opacity 0.2s ease;
   cursor: default;
+}
+
+.bar-chart__column {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.bar-chart__month {
+  font-size: 10px;
+  color: var(--text-secondary);
+  margin-top: 8px;
 }
 
 .bar-chart__bar:hover {
@@ -1002,6 +1022,76 @@ img {
   font-size: 10px;
   color: #94a3b8;
   text-align: center;
+}
+
+.payroll-expenses-chart {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.payroll-expenses-chart__y-axis {
+  width: 58px;
+  flex: 0 0 58px;
+  height: 220px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding-right: 6px;
+  border-right: 1px solid var(--border-color);
+}
+
+.payroll-expenses-chart__y-title {
+  position: absolute;
+  left: -63px;
+  top: 50%;
+  white-space: nowrap;
+  transform: translateY(-50%) rotate(-90deg);
+  font-size: 12px;
+  color: var(--text-secondary);
+  letter-spacing: 0.2px;
+}
+
+.payroll-expenses-chart__ticks {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-align: right;
+  width: 100%;
+  padding-right: 2px;
+}
+
+.payroll-expenses-chart__plot-area {
+  flex: 1;
+}
+
+.payroll-expenses-chart__x-title {
+  position: relative;
+  margin: 14px auto 0;
+  width: fit-content;
+  font-size: 12px;
+  color: var(--text-secondary);
+  padding: 0 34px;
+}
+
+.payroll-expenses-chart__x-title::before,
+.payroll-expenses-chart__x-title::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 22px;
+  border-top: 1px solid var(--text-muted);
+}
+
+.payroll-expenses-chart__x-title::before {
+  left: 0;
+}
+
+.payroll-expenses-chart__x-title::after {
+  right: 0;
 }
 
 .pie-chart {
