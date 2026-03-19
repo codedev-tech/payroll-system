@@ -172,6 +172,7 @@ img {
   position: relative;
   overflow: hidden;
   border-left: 3px solid transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .sidebar__link::before {
@@ -298,7 +299,7 @@ img {
 .sidebar.collapsed .sidebar__link {
   justify-content: flex-start !important;
   padding-inline: 14px !important;
-  gap: 12px !important;
+  gap: 0 !important;
 }
 
 .sidebar.collapsed .sidebar__link .icon {
