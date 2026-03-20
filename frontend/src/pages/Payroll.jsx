@@ -9,7 +9,7 @@ export default function Payroll() {
 
   const recentPayroll = [
     { employee: 'Juan Dela Cruz',     grossPay: '₱ 6,200', deduction: '₱ 5,000', netPay: '₱ 32,500' },
-    { employee: 'Ethel Perez Gannad', grossPay: '₱ 3,000', deduction: '₱ 5,000', netPay: '₱ 62,500' },
+    { employee: 'Leo Gannad', grossPay: '₱ 3,000', deduction: '₱ 5,000', netPay: '₱ 62,500' },
     { employee: 'Ferdinand Monde',    grossPay: '₱ 4,500', deduction: '₱ 2,800', netPay: '₱ 35,200' },
     { employee: 'Jerizz Dolosa',      grossPay: '₱ 5,100', deduction: '₱ 3,200', netPay: '₱ 28,400' },
   ];
