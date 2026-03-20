@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import '../styles/pages/employees.css';
 
 const employees = [
   { name: 'Juan Dela Cruz',     id: 101, department: 'Engineering',  status: 'Active',   salary: '₱ 32,500' },

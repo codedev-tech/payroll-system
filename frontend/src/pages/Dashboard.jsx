@@ -1,3 +1,5 @@
+import '../styles/pages/dashboard.css';
+
 export default function Dashboard() {
   const stats = [
     { label: 'Total Employees', value: '156', icon: <i className="bi bi-people"></i>, color: 'blue' },

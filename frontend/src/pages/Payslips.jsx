@@ -1,3 +1,5 @@
+import '../styles/pages/payslips.css';
+
 export default function Payslips() {
   const employee = {
     name: 'Juan Dela Cruz',

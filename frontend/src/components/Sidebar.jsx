@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import '../styles/components/sidebar.css';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: <i className="bi bi-grid-fill"></i> },

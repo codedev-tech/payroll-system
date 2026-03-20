@@ -1,3 +1,5 @@
+import '../styles/pages/payroll.css';
+
 export default function Payroll() {
   const stats = [
     { label: 'Total Salary', value: '₱123,456', color: '', icon: <i className="bi bi-graph-up-arrow"></i> },

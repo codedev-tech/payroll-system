@@ -1,3 +1,5 @@
+import '../styles/pages/reports.css';
+
 const barData = [
   { label: 'Jan', value: 600 },
   { label: 'Feb', value: 800 },

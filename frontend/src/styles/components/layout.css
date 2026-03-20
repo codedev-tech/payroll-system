@@ -1,0 +1,225 @@
+.layout {
+  display: flex;
+  width: 100%;
+}
+
+.layout.theme-dark {
+  --content-bg: #0f1729;
+  --card-bg: #17253d;
+  --text-primary: #edf3ff;
+  --text-secondary: #c2d0e6;
+  --text-muted: #9fb0cb;
+  --border-color: #304261;
+  --border-light: #283853;
+  --accent: #86acf5;
+  --accent-light: #1f3354;
+  --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  --card-shadow-hover: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+
+.layout.theme-dark .sidebar {
+  background: linear-gradient(180deg, #172a46 0%, #1a3050 100%);
+}
+
+.layout.theme-dark .text-muted {
+  color: #9eb0cf !important;
+}
+
+.layout.theme-dark .text-secondary {
+  color: #b8c6dd !important;
+}
+
+.layout.theme-dark .text-dark,
+.layout.theme-dark .text-primary {
+  color: #e6edf8 !important;
+}
+
+.layout.theme-dark .table,
+.layout.theme-dark .table td,
+.layout.theme-dark .table th {
+  color: #e6efff;
+}
+
+.layout.theme-dark .table {
+  --bs-table-bg: #1b2c47;
+  --bs-table-striped-bg: #223554;
+  --bs-table-hover-bg: #293e61;
+  --bs-table-color: #e6efff;
+  --bs-table-border-color: #334a6e;
+}
+
+.layout.theme-dark .table > :not(caption) > * > * {
+  background-color: var(--bs-table-bg);
+  color: var(--bs-table-color);
+  border-color: var(--bs-table-border-color);
+}
+
+.layout.theme-dark .table-light,
+.layout.theme-dark .table-light > th,
+.layout.theme-dark .table-light > td {
+  background-color: #233758 !important;
+  color: #ecf3ff !important;
+}
+
+.layout.theme-dark .card,
+.layout.theme-dark .stat-card,
+.layout.theme-dark .page-header {
+  border-color: #2a3a57;
+}
+
+.layout.theme-dark .page-header {
+  background: #172238;
+}
+
+.layout.theme-dark .form-control,
+.layout.theme-dark .search-bar__input,
+.layout.theme-dark input,
+.layout.theme-dark select,
+.layout.theme-dark textarea {
+  background: #16263f;
+  color: #edf3ff;
+  border-color: #334a6e;
+}
+
+.layout.theme-dark .form-control::placeholder,
+.layout.theme-dark .search-bar__input::placeholder {
+  color: #9fb0cb;
+}
+
+.layout.theme-dark .form-control:focus,
+.layout.theme-dark .search-bar__input:focus {
+  border-color: #86acf5;
+  box-shadow: 0 0 0 3px rgba(134, 172, 245, 0.2);
+}
+
+.layout.theme-dark .btn-primary {
+  color: #ffffff;
+}
+
+.layout.theme-dark .section-title,
+.layout.theme-dark .page-header h1 {
+  color: #edf3ff;
+}
+
+.layout.theme-dark .theme-icon-btn,
+.layout.theme-dark .mobile-menu-btn {
+  background: #1e2d47;
+  color: #dbe6f8;
+  border-color: #30456b;
+}
+
+.layout.theme-dark .theme-icon-btn:hover,
+.layout.theme-dark .mobile-menu-btn:hover {
+  background: #25375a;
+}
+
+.topbar-actions {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  z-index: 4;
+}
+
+.theme-icon-btn {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  box-shadow: var(--card-shadow);
+}
+
+.theme-icon-btn:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.theme-icon-btn i {
+  font-size: 16px;
+}
+
+.mobile-header {
+  padding: 12px 14px;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  display: none;
+}
+
+.mobile-brand-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  color: #fff;
+  background: var(--accent);
+}
+
+.mobile-brand-title {
+  color: var(--text-primary);
+  font-size: 16px;
+}
+
+.mobile-menu-btn {
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border-radius: 10px;
+  padding: 8px;
+  min-width: 38px;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+  min-width: 0;
+  background: var(--content-bg);
+  overflow-x: hidden;
+  transition: margin-left 0.28s ease;
+  position: relative;
+}
+
+.main-content.sidebar-collapsed {
+  margin-left: var(--sidebar-collapsed-width);
+}
+
+@media (max-width: 1024px) {
+  .main-content .p-md-4 {
+    padding: 1rem !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .mobile-header {
+    display: flex;
+    height: 64px;
+  }
+
+  .topbar-actions {
+    display: none !important;
+  }
+
+  .main-content,
+  .main-content.sidebar-collapsed {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-content .p-3,
+  .main-content .p-md-4 {
+    padding: 0.8rem !important;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .page-header h1 {
+    font-size: 22px;
+  }
+}
