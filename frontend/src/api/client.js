@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getActorUserId } from '../utils/auth';
 
 /**
  * REST API Client configuration following the principles from:
@@ -10,6 +11,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -22,6 +24,17 @@ apiClient.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
+  const actorUserId = getActorUserId();
+  if (actorUserId) {
+    config.headers['X-Actor-User-Id'] = actorUserId;
+  }
+
+  const kioskKey = import.meta.env.VITE_KIOSK_KEY;
+  if (kioskKey && typeof config.url === 'string' && config.url.includes('/attendance/kiosk/')) {
+    config.headers['X-Kiosk-Key'] = kioskKey;
+  }
+
   return config;
 }, (error) => {
   return Promise.reject(error);

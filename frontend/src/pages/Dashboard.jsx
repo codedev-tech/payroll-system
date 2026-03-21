@@ -1,27 +1,76 @@
+import { useEffect, useMemo, useState } from 'react';
+import { analyticsApi, extractData } from '../api';
+import { getAuthUser } from '../utils/auth';
 import '../styles/pages/dashboard.css';
 
 export default function Dashboard() {
-  const stats = [
-    { label: 'Total Employees', value: '156', icon: <i className="bi bi-people"></i>, color: 'blue' },
-    { label: 'Total Payroll', value: '₱2,450,000', icon: <i className="bi bi-cash-stack"></i>, color: 'green' },
-    { label: 'Pending Payroll', value: '₱380,000', icon: <i className="bi bi-clock-history"></i>, color: 'orange' },
-    { label: 'Active Employees', value: '142', icon: <i className="bi bi-check-circle"></i>, color: 'green' },
-  ];
+  const authUser = getAuthUser();
+  const greetingName = authUser?.role === 'admin'
+    ? 'Admin'
+    : (authUser?.first_name || authUser?.name || 'there');
+  const [statsPayload, setStatsPayload] = useState(null);
+  const [recentActivity, setRecentActivity] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const recentActivity = [
-    { employee: 'Juan Dela Cruz', action: 'Payroll processed', date: 'Mar 15, 2026', amount: '₱32,500' },
-    { employee: 'Ferdinand Monde', action: 'Salary updated', date: 'Mar 14, 2026', amount: '₱35,000' },
-    { employee: 'Jerizz Dolosa', action: 'New hire onboarded', date: 'Mar 13, 2026', amount: '₱28,000' },
-    { employee: 'Leo Gannad', action: 'Bonus issued', date: 'Mar 12, 2026', amount: '₱5,000' },
-    { employee: 'Fernandiz Ruwel', action: 'Deduction updated', date: 'Mar 11, 2026', amount: '₱1,500' },
-  ];
+  const currency = (value) => new Intl.NumberFormat('en-PH', {
+    style: 'currency',
+    currency: 'PHP',
+    maximumFractionDigits: 2,
+  }).format(Number(value || 0));
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadDashboard = async () => {
+      try {
+        setLoading(true);
+        setError('');
+
+        const response = await analyticsApi.dashboard();
+        const data = extractData(response);
+
+        if (isMounted) {
+          setStatsPayload(data?.stats || null);
+          setRecentActivity(Array.isArray(data?.recent_activity) ? data.recent_activity : []);
+        }
+      } catch {
+        if (isMounted) {
+          setError('Unable to load dashboard analytics.');
+          setStatsPayload(null);
+          setRecentActivity([]);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadDashboard();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const stats = useMemo(() => {
+    return [
+      { label: 'Total Employees', value: statsPayload?.total_employees ?? 0, icon: <i className="bi bi-people"></i>, color: 'blue' },
+      { label: 'Total Payroll', value: currency(statsPayload?.total_payroll ?? 0), icon: <i className="bi bi-cash-stack"></i>, color: 'green' },
+      { label: 'Pending Payroll', value: statsPayload?.pending_payroll ?? 0, icon: <i className="bi bi-clock-history"></i>, color: 'orange' },
+      { label: 'Active Employees', value: statsPayload?.active_employees ?? 0, icon: <i className="bi bi-check-circle"></i>, color: 'green' },
+    ];
+  }, [statsPayload]);
 
   return (
     <div className="fade-in">
       <div className="page-header mb-4">
         <h1 className="h3">Dashboard</h1>
-        <p className="text-muted">Welcome back! Here's your payroll overview.</p>
+        <p className="text-muted">Welcome back <span className="greeting-admin">{greetingName}</span>! Here's your payroll overview.</p>
       </div>
+
+      {error && <div className="alert alert-warning">{error}</div>}
       
       <div className="page-body">
         {/* Stats Row */}
@@ -57,14 +106,24 @@ export default function Dashboard() {
                     </tr>
                   </thead>
                   <tbody>
-                    {recentActivity.map((item, i) => (
+                    {loading && (
+                      <tr>
+                        <td colSpan={4} className="text-center text-muted py-4">Loading analytics...</td>
+                      </tr>
+                    )}
+                    {!loading && recentActivity.map((item, i) => (
                       <tr key={i}>
                         <td className="fw-medium text-dark">{item.employee}</td>
                         <td className="text-secondary">{item.action}</td>
                         <td className="text-secondary">{item.date}</td>
-                        <td className="fw-bold text-end">{item.amount}</td>
+                        <td className="fw-bold text-end">{currency(item.amount)}</td>
                       </tr>
                     ))}
+                    {!loading && recentActivity.length === 0 && (
+                      <tr>
+                        <td colSpan={4} className="text-center text-muted py-4">No recent activity available.</td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>

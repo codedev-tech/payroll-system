@@ -1,26 +1,6 @@
+import { useEffect, useMemo, useState } from 'react';
+import { analyticsApi, extractData } from '../api';
 import '../styles/pages/reports.css';
-
-const barData = [
-  { label: 'Jan', value: 600 },
-  { label: 'Feb', value: 800 },
-  { label: 'Mar', value: 950 },
-  { label: 'Apr', value: 1200 },
-  { label: 'May', value: 1400 },
-  { label: 'Jun', value: 1550 },
-  { label: 'Jul', value: 1800 },
-  { label: 'Aug', value: 1850 },
-];
-
-const maxBar = Math.max(...barData.map(d => d.value));
-const yAxisTicks = [2000, 1800, 1600, 1400, 1200, 1000, 800, 600, 400, 200, 0];
-
-const monthlyReport = [
-  { month: 'January',  total: '₱ 123,456', status: 'Paid',    taxes: '₱ 10,289' },
-  { month: 'February', total: '₱ 829,456', status: 'Pending', taxes: '₱ 11,289' },
-  { month: 'March',    total: '₱ 141,456', status: 'Paid',    taxes: '₱ 13,289' },
-  { month: 'April',    total: '₱ 256,780', status: 'Paid',    taxes: '₱ 15,420' },
-  { month: 'May',      total: '₱ 198,340', status: 'Pending', taxes: '₱ 12,100' },
-];
 
 const statusClass = {
   Paid: 'badge--paid',
@@ -28,12 +8,97 @@ const statusClass = {
 };
 
 export default function Reports() {
+  const [barData, setBarData] = useState([]);
+  const [departmentCost, setDepartmentCost] = useState([]);
+  const [monthlyReport, setMonthlyReport] = useState([]);
+  const [hoveredDepartmentIndex, setHoveredDepartmentIndex] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadReports = async () => {
+      try {
+        setLoading(true);
+        setError('');
+
+        const response = await analyticsApi.reports();
+        const data = extractData(response);
+
+        if (isMounted) {
+          setBarData(Array.isArray(data?.payroll_expenses) ? data.payroll_expenses : []);
+          setDepartmentCost(Array.isArray(data?.department_cost) ? data.department_cost : []);
+          setMonthlyReport(Array.isArray(data?.monthly_report) ? data.monthly_report : []);
+        }
+      } catch {
+        if (isMounted) {
+          setError('Unable to load reports analytics.');
+          setBarData([]);
+          setDepartmentCost([]);
+          setMonthlyReport([]);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadReports();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const maxBar = useMemo(() => Math.max(1, ...barData.map((item) => Number(item.value || 0))), [barData]);
+  const yAxisTicks = useMemo(() => {
+    const maxRounded = Math.ceil(maxBar / 1000) * 1000;
+    const step = Math.max(200, Math.floor(maxRounded / 10));
+    const ticks = [];
+    for (let value = maxRounded; value >= 0; value -= step) {
+      ticks.push(value);
+    }
+    return ticks;
+  }, [maxBar]);
+
+  const currency = (value) => new Intl.NumberFormat('en-PH', {
+    style: 'currency',
+    currency: 'PHP',
+    maximumFractionDigits: 2,
+  }).format(Number(value || 0));
+
+  const pieColors = ['#4a77d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];
+  const totalDepartmentCost = departmentCost.reduce((sum, item) => sum + Number(item.value || 0), 0);
+  const pieSegments = departmentCost.map((item, index) => {
+    const previousTotal = departmentCost
+      .slice(0, index)
+      .reduce((sum, row) => sum + Number(row.value || 0), 0);
+    const startPercent = totalDepartmentCost > 0 ? (previousTotal / totalDepartmentCost) * 100 : 0;
+    const endPercent = totalDepartmentCost > 0 ? ((previousTotal + Number(item.value || 0)) / totalDepartmentCost) * 100 : 0;
+    return `${pieColors[index % pieColors.length]} ${startPercent}% ${endPercent}%`;
+  });
+  const pieBackground = pieSegments.length > 0
+    ? `conic-gradient(${pieSegments.join(',')})`
+    : 'conic-gradient(#334155 0% 100%)';
+
+  const hoveredDepartment = hoveredDepartmentIndex !== null
+    ? departmentCost[hoveredDepartmentIndex]
+    : null;
+
+  const pieHoverTitle = departmentCost.length > 0
+    ? departmentCost.map((item) => `${item.label}: ${currency(item.value)}`).join('\n')
+    : 'No department cost data.';
+
   return (
     <div className="fade-in">
       <div className="page-header mb-4">
         <h1 className="h3">Reports</h1>
         <p className="text-muted">Insights and analytics for your payroll</p>
       </div>
+
+      {error && <div className="alert alert-warning">{error}</div>}
 
       <div className="page-body">
         {/* Charts Row */}
@@ -58,12 +123,17 @@ export default function Reports() {
                       <div className="bar-chart__column" key={i}>
                         <div
                           className="bar-chart__bar"
-                          style={{ height: `${(d.value / maxBar) * 100}%` }}
-                          title={`${d.label}: ₱${d.value.toLocaleString()}`}
+                          style={{
+                            height: `${(Number(d.value || 0) / maxBar) * 100}%`,
+                            '--bar-delay': `${i * 80}ms`,
+                          }}
+                          title={`${d.label}: ₱${Number(d.value || 0).toLocaleString()}`}
                         />
                         <span className="bar-chart__month">{d.label}</span>
                       </div>
                     ))}
+                    {loading && <div className="small text-muted">Loading chart...</div>}
+                    {!loading && barData.length === 0 && <div className="small text-muted">No chart data available.</div>}
                   </div>
                   <div className="payroll-expenses-chart__x-title">Months of the year</div>
                 </div>
@@ -76,32 +146,38 @@ export default function Reports() {
             <div className="card border-0 shadow-sm h-100">
               <h2 className="section-title h6 mb-4">Department Cost</h2>
               <div
-                className="pie-chart mx-auto"
+                className="pie-chart pie-chart--animate mx-auto"
                 style={{
                   width: '180px',
                   height: '180px',
                   borderRadius: '50%',
-                  background: `conic-gradient(
-                    #4a77d4 0% 35%,
-                    #10b981 35% 60%,
-                    #f59e0b 60% 80%,
-                    #ef4444 80% 100%
-                  )`,
+                  background: pieBackground,
                 }}
+                title={pieHoverTitle}
               />
               <div className="d-flex justify-content-center gap-3 mt-4 flex-wrap">
-                {[
-                  { label: 'Engineering', color: '#4a77d4' },
-                  { label: 'Marketing', color: '#10b981' },
-                  { label: 'HR', color: '#f59e0b' },
-                  { label: 'Finance', color: '#ef4444' },
-                ].map((item, i) => (
-                  <div key={i} className="d-flex align-items-center gap-2 small">
-                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: item.color }} />
+                {departmentCost.map((item, i) => (
+                  <div
+                    key={i}
+                    className="d-flex align-items-center gap-2 small"
+                    style={{ cursor: 'default' }}
+                    title={`${item.label}: ${currency(item.value)}`}
+                    onMouseEnter={() => setHoveredDepartmentIndex(i)}
+                    onMouseLeave={() => setHoveredDepartmentIndex(null)}
+                  >
+                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: pieColors[i % pieColors.length] }} />
                     <span className="text-secondary">{item.label}</span>
                   </div>
                 ))}
+                {!loading && departmentCost.length === 0 && <span className="text-muted small">No department cost data.</span>}
               </div>
+              {!loading && departmentCost.length > 0 && (
+                <div className="text-center small text-muted mt-2">
+                  {hoveredDepartment
+                    ? `${hoveredDepartment.label}: ${currency(hoveredDepartment.value)}`
+                    : 'Hover a legend item to see total cost.'}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -125,18 +201,28 @@ export default function Reports() {
                     </tr>
                   </thead>
                   <tbody>
-                    {monthlyReport.map((row, i) => (
+                    {loading && (
+                      <tr>
+                        <td colSpan={4} className="text-center text-muted py-4">Loading report...</td>
+                      </tr>
+                    )}
+                    {!loading && monthlyReport.map((row, i) => (
                       <tr key={i}>
                         <td className="fw-medium text-dark">{row.month}</td>
-                        <td className="text-secondary">{row.total}</td>
+                        <td className="text-secondary">{currency(row.total_payroll)}</td>
                         <td className="text-center">
                           <span className={`badge rounded-pill ${statusClass[row.status] || 'bg-light text-dark'}`}>
                             {row.status}
                           </span>
                         </td>
-                        <td className="text-end fw-bold">{row.taxes}</td>
+                        <td className="text-end fw-bold">{currency(row.taxes)}</td>
                       </tr>
                     ))}
+                    {!loading && monthlyReport.length === 0 && (
+                      <tr>
+                        <td colSpan={4} className="text-center text-muted py-4">No monthly payroll report available.</td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>

@@ -142,6 +142,114 @@
   font-size: 16px;
 }
 
+.profile-menu-btn {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  gap: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  box-shadow: var(--card-shadow);
+  padding: 0 12px;
+}
+
+.profile-menu-btn:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.profile-menu-btn__avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.profile-menu-btn__name {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  z-index: 1100;
+  padding: 68px 20px 16px;
+}
+
+.profile-modal-card {
+  width: min(360px, calc(100vw - 32px));
+  max-width: 360px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: var(--card-shadow-hover);
+  padding: 14px;
+}
+
+.profile-modal-card__header {
+  margin-bottom: 10px;
+}
+
+.profile-modal-card .h5 {
+  font-size: 16px;
+  color: white;
+}
+
+.profile-modal-card .text-muted {
+  font-size: 13px;
+}
+
+.profile-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.profile-field {
+  margin: 0;
+}
+
+.profile-modal-card .form-label {
+  margin-bottom: 2px;
+  font-size: 12px;
+}
+
+.profile-modal-card .form-control {
+  min-height: 32px;
+  padding: 5px 9px;
+}
+
+.profile-modal-card .input-group .btn {
+  padding: 4px 10px;
+}
+
+.profile-modal-actions {
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.profile-modal-btn {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
 .mobile-header {
   padding: 12px 14px;
   background: var(--card-bg);
@@ -169,6 +277,39 @@
   border-radius: 10px;
   padding: 8px;
   min-width: 38px;
+}
+
+.mobile-profile-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  padding: 6px 10px;
+  max-width: 150px;
+}
+
+.mobile-profile-btn__avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.mobile-profile-btn__name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
 }
 
 .main-content {

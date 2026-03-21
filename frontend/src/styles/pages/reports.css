@@ -19,6 +19,9 @@
   min-width: 16px;
   transition: transform 0.2s ease, opacity 0.2s ease;
   cursor: default;
+  transform-origin: bottom;
+  animation: reports-bar-grow 720ms ease-out both;
+  animation-delay: var(--bar-delay, 0ms);
 }
 
 .bar-chart__column {
@@ -117,6 +120,32 @@
   height: 160px;
   border-radius: 50%;
   margin: 10px auto;
+}
+
+.pie-chart--animate {
+  animation: reports-pie-reveal 680ms ease-out both;
+}
+
+@keyframes reports-bar-grow {
+  from {
+    transform: scaleY(0);
+    opacity: 0.35;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes reports-pie-reveal {
+  from {
+    transform: scale(0.82) rotate(-10deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
 }
 
 @media (max-width: 1024px) {

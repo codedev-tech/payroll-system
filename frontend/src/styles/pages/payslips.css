@@ -39,3 +39,31 @@
   font-size: 16px;
   font-weight: 700;
 }
+
+.payslip-accordion-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.payslip-accordion-trigger {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--border-color);
+  background: linear-gradient(135deg, #1f3556 0%, #29456f 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.payslip-page .form-check-label {
+  color: #dfe9ff;
+  font-weight: 600;
+}
+
+.payslip-page .form-check-input {
+  border-color: #6f86ad;
+  background-color: #152844;
+}

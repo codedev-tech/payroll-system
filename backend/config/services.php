@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'attendance_kiosk' => [
+        'key' => env('ATTENDANCE_KIOSK_KEY'),
+        'allowed_ips' => array_values(array_filter(array_map(
+            static fn (string $value) => trim($value),
+            explode(',', (string) env('ATTENDANCE_KIOSK_ALLOWED_IPS', ''))
+        ))),
+    ],
+
 ];
