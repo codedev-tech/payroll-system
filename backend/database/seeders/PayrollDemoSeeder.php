@@ -5,11 +5,15 @@ namespace Database\Seeders;
 use App\Models\Department;
 use App\Models\LeaveType;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class PayrollDemoSeeder extends Seeder
 {
     public function run(): void
+
     {
+
         Department::query()->updateOrCreate(
             ['code' => 'ENG'],
             [
@@ -56,6 +60,34 @@ class PayrollDemoSeeder extends Seeder
                 'requires_approval' => true,
             ]
         );
+
+        // USERS (IMPORTANT)
+User::updateOrCreate(
+    ['email' => 'admin@gmail.com'],
+    [
+        'name' => 'Admin',
+        'password' => Hash::make('123456'),
+        'role' => 'admin',
+    ]
+);
+
+User::updateOrCreate(
+    ['email' => 'hr@gmail.com'],
+    [
+        'name' => 'HR User',
+        'password' => Hash::make('123456'),
+        'role' => 'hr',
+    ]
+);
+
+User::updateOrCreate(
+    ['email' => 'employee@gmail.com'],
+    [
+        'name' => 'Employee User',
+        'password' => Hash::make('123456'),
+        'role' => 'employee',
+    ]
+);
 
         $this->command?->info('Seeded master data only (departments and leave types).');
     }
