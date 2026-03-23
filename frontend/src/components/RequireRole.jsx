@@ -6,7 +6,7 @@ export default function RequireRole({ allowedRoles, children }) {
   const role = getActorRole();
 
   if (!role || !allowedRoles.includes(role)) {
-    return <Navigate to="/payslips" replace state={{ from: location }} />;
+    return <Navigate to="/employees" replace state={{ from: location }} />;
   }
 
   return children;

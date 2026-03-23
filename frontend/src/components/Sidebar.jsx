@@ -1,26 +1,16 @@
 import { NavLink } from 'react-router-dom';
 import '../styles/components/sidebar.css';
-import { getActorRole } from '../utils/auth';
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: <i className="bi bi-grid-fill"></i> },
   { path: '/employees', label: 'Employees', icon: <i className="bi bi-people-fill"></i> },
   { path: '/payroll', label: 'Payroll', icon: <i className="bi bi-wallet2"></i> },
   { path: '/payslips', label: 'Payslips', icon: <i className="bi bi-file-earmark-text-fill"></i> },
-  { path: '/attendance', label: 'Attendance', icon: <i className="bi bi-clock-history"></i> },
-  { path: '/leave-requests', label: 'Leaves', icon: <i className="bi bi-calendar-check"></i> },
   { path: '/reports', label: 'Report', icon: <i className="bi bi-bar-chart-fill"></i> },
 ];
 
-const employeeNavItems = [
-  { path: '/payslips', label: 'Payslips', icon: <i className="bi bi-file-earmark-text-fill"></i> },
-  { path: '/attendance', label: 'Attendance', icon: <i className="bi bi-clock-history"></i> },
-  { path: '/leave-requests', label: 'Leaves', icon: <i className="bi bi-calendar-check"></i> },
-];
-
 export default function Sidebar({ isOpen, isCollapsed, onClose, onToggleCollapse }) {
-  const role = getActorRole();
-  const visibleNavItems = role === 'employee' ? employeeNavItems : navItems;
+  const visibleNavItems = navItems;
 
   return (
     <aside className={`sidebar ${isOpen ? 'open' : ''} ${isCollapsed ? 'collapsed' : ''} h-100`}>

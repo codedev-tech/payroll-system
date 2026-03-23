@@ -15,6 +15,13 @@ class LeaveRequestController extends Controller
     public function index(Request $request): JsonResponse
     {
         $actor = $this->resolveActor($request);
+
+        if (! $actor || ! in_array($actor->role, ['admin', 'hr'], true)) {
+            return response()->json([
+                'message' => 'Access denied. Only HR or Admin can view leave requests.',
+            ], 403);
+        }
+
         $query = LeaveRequest::query()
             ->with([
                 'employee:id,employee_no,first_name,last_name,middle_name',
@@ -22,15 +29,6 @@ class LeaveRequestController extends Controller
                 'reviewer:id,name,email',
             ])
             ->latest();
-
-        if ($actor?->role === 'employee') {
-            $employeeId = (int) ($actor->employeeProfile?->id ?? 0);
-            if (! $employeeId) {
-                return response()->json(['data' => []]);
-            }
-
-            $query->where('employee_id', $employeeId);
-        }
 
         if ($request->filled('status')) {
             $query->where('status', $request->string('status'));
@@ -56,14 +54,10 @@ class LeaveRequestController extends Controller
             'reason' => ['nullable', 'string', 'max:1000'],
         ]);
 
-        if ($actor?->role === 'employee') {
-            $employeeId = (int) ($actor->employeeProfile?->id ?? 0);
-            if (! $employeeId) {
-                return response()->json([
-                    'message' => 'Employee profile not found for current user.',
-                ], 422);
-            }
-            $validated['employee_id'] = $employeeId;
+        if (! $actor || ! in_array($actor->role, ['admin', 'hr'], true)) {
+            return response()->json([
+                'message' => 'Access denied. Only HR or Admin can submit leave requests.',
+            ], 403);
         }
 
         if (empty($validated['employee_id'])) {

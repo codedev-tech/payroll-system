@@ -4,9 +4,9 @@ import { getActorRole } from '../utils/auth';
 export default function RoleHomeRedirect() {
   const role = getActorRole();
 
-  if (role === 'employee') {
-    return <Navigate to="/payslips" replace />;
+  if (role === 'hr' || role === 'admin') {
+    return <Navigate to="/employees" replace />;
   }
 
-  return <Navigate to="/employees" replace />;
+  return <Navigate to="/login" replace />;
 }

@@ -28,6 +28,12 @@ class AuthController extends Controller
             ], 401);
         }
 
+        if ($user->role === 'employee') {
+            return response()->json([
+                'message' => 'Employee role is not supported.',
+            ], 403);
+        }
+
         return response()->json([
             'data' => [
                 'user' => [

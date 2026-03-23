@@ -80,8 +80,7 @@ export default function Payslips() {
     };
 
     const status = payslip?.employee?.employment_status;
-    const hasLinkedUser = Boolean(payslip?.employee?.user_id);
-    const isHistorical = status !== 'active' || !hasLinkedUser;
+    const isHistorical = status !== 'active';
 
     const earnings = Array.isArray(payslip?.earnings) ? payslip.earnings : [];
     const deductions = Array.isArray(payslip?.deductions) ? payslip.deductions : [];

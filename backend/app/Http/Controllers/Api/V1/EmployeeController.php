@@ -17,7 +17,7 @@ class EmployeeController extends Controller
         $limit = (int) $request->integer('limit', 15);
 
         $query = Employee::query()
-            ->whereHas('user')
+            ->where('employment_status', '!=', 'inactive')
             ->with('department:id,name')
             ->orderBy('last_name')
             ->orderBy('first_name');

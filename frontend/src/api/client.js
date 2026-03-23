@@ -30,11 +30,6 @@ apiClient.interceptors.request.use((config) => {
     config.headers['X-Actor-User-Id'] = actorUserId;
   }
 
-  const kioskKey = import.meta.env.VITE_KIOSK_KEY;
-  if (kioskKey && typeof config.url === 'string' && config.url.includes('/attendance/kiosk/')) {
-    config.headers['X-Kiosk-Key'] = kioskKey;
-  }
-
   return config;
 }, (error) => {
   return Promise.reject(error);

@@ -35,11 +35,8 @@ export default function Employees() {
   const [submitSuccess, setSubmitSuccess] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [deletingEmployeeId, setDeletingEmployeeId] = useState(null);
+  const [updatingStatusEmployeeId, setUpdatingStatusEmployeeId] = useState(null);
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
     first_name: '',
     last_name: '',
     middle_name: '',
@@ -47,7 +44,6 @@ export default function Employees() {
     department_id: '',
     position: '',
     basic_salary: '',
-    attendance_pin: '',
     new_department_name: '',
   });
 
@@ -140,10 +136,6 @@ export default function Employees() {
 
   const resetForm = () => {
     setForm({
-      name: '',
-      email: '',
-      password: '',
-      password_confirmation: '',
       first_name: '',
       last_name: '',
       middle_name: '',
@@ -151,7 +143,6 @@ export default function Employees() {
       department_id: '',
       position: '',
       basic_salary: '',
-      attendance_pin: '',
       new_department_name: '',
     });
   };
@@ -170,10 +161,6 @@ export default function Employees() {
 
     const payload = {
       actor_user_id: actorUserId,
-      name: form.name,
-      email: form.email,
-      password: form.password,
-      password_confirmation: form.password_confirmation,
       first_name: form.first_name,
       last_name: form.last_name,
       middle_name: form.middle_name || null,
@@ -181,7 +168,6 @@ export default function Employees() {
       department_id: form.department_id && form.department_id !== '__new__' ? Number(form.department_id) : null,
       position: form.position || null,
       basic_salary: form.basic_salary ? Number(form.basic_salary) : 0,
-      attendance_pin: form.attendance_pin || null,
     };
 
     if (form.department_id === '__new__' && form.new_department_name.trim()) {
@@ -237,6 +223,22 @@ export default function Employees() {
     }
   };
 
+  const handleStatusChange = async (employee, newStatus) => {
+    try {
+      setUpdatingStatusEmployeeId(employee.id);
+      await employeesApi.patch(employee.id, { employment_status: newStatus });
+      setEmployees((previous) =>
+        previous.map((emp) =>
+          emp.id === employee.id ? { ...emp, employment_status: newStatus } : emp
+        )
+      );
+    } catch (error) {
+      window.alert(`Unable to update employee status. ${error?.response?.data?.message || ''}`);
+    } finally {
+      setUpdatingStatusEmployeeId(null);
+    }
+  };
+
   const filtered = useMemo(() => {
     const keyword = search.toLowerCase();
 
@@ -287,22 +289,6 @@ export default function Employees() {
             <form className="border rounded p-3 mb-4" onSubmit={handleCreateEmployeeAccount}>
               <h2 className="h6 mb-3">Create Employee (HR/Admin)</h2>
               <div className="row g-3">
-                <div className="col-md-6">
-                  <label className="form-label">Login Name</label>
-                  <input className="form-control" name="name" value={form.name} onChange={handleFieldChange} required />
-                </div>
-                <div className="col-md-6">
-                  <label className="form-label">Email</label>
-                  <input type="email" className="form-control" name="email" value={form.email} onChange={handleFieldChange} required />
-                </div>
-                <div className="col-md-6">
-                  <label className="form-label">Password</label>
-                  <input type="password" className="form-control" name="password" value={form.password} onChange={handleFieldChange} minLength={8} required />
-                </div>
-                <div className="col-md-6">
-                  <label className="form-label">Confirm Password</label>
-                  <input type="password" className="form-control" name="password_confirmation" value={form.password_confirmation} onChange={handleFieldChange} minLength={8} required />
-                </div>
                 <div className="col-md-4">
                   <label className="form-label">First Name</label>
                   <input className="form-control" name="first_name" value={form.first_name} onChange={handleFieldChange} required />
@@ -349,10 +335,6 @@ export default function Employees() {
                 <div className="col-md-4">
                   <label className="form-label">Basic Salary</label>
                   <input type="number" min="0" step="0.01" className="form-control" name="basic_salary" value={form.basic_salary} onChange={handleFieldChange} />
-                </div>
-                <div className="col-md-4">
-                  <label className="form-label">Attendance PIN (optional)</label>
-                  <input type="password" minLength={4} maxLength={12} className="form-control" name="attendance_pin" value={form.attendance_pin} onChange={handleFieldChange} placeholder="4-12 digits/chars" />
                 </div>
               </div>
               {submitError && <div className="alert alert-danger mt-3 mb-0 py-2">{submitError}</div>}
@@ -401,9 +383,24 @@ export default function Employees() {
                     <td className="text-secondary">{emp.employee_no}</td>
                     <td className="text-secondary">{emp.department?.name ?? 'Unassigned'}</td>
                     <td>
-                      <span className={`badge rounded-pill ${statusClass[emp.employment_status] ?? 'badge--inactive'}`}>
-                        {statusLabel[emp.employment_status] ?? emp.employment_status}
-                      </span>
+                      {canManageEmployees ? (
+                        <select
+                          className="form-select form-select-sm"
+                          value={emp.employment_status}
+                          onChange={(e) => handleStatusChange(emp, e.target.value)}
+                          disabled={updatingStatusEmployeeId === emp.id}
+                          style={{ maxWidth: '150px' }}
+                        >
+                          <option value="active">Active</option>
+                          <option value="on_leave">On Leave</option>
+                          <option value="pending">Pending</option>
+                          <option value="inactive">Inactive</option>
+                        </select>
+                      ) : (
+                        <span className={`badge rounded-pill ${statusClass[emp.employment_status] ?? 'badge--inactive'}`}>
+                          {statusLabel[emp.employment_status] ?? emp.employment_status}
+                        </span>
+                      )}
                     </td>
                     <td className="fw-bold text-end">{salaryFormatter.format(Number(emp.basic_salary || 0))}</td>
                     {canManageEmployees && (

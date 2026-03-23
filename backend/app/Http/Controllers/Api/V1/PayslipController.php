@@ -21,33 +21,24 @@ class PayslipController extends Controller
             ], 401);
         }
 
-        if ($actor->role === 'employee') {
-            if ($actor->employeeProfile) {
-                $this->ensureMonthlyPayslipsForEmployeeIds([(int) $actor->employeeProfile->id]);
-            }
-        } else {
-            $employeeIds = Employee::query()
-                ->when($request->filled('employee_id'), fn ($q) => $q->where('id', $request->integer('employee_id')))
-                ->pluck('id')
-                ->all();
-
-            $this->ensureMonthlyPayslipsForEmployeeIds($employeeIds);
+        if (! in_array($actor->role, ['admin', 'hr'], true)) {
+            return response()->json([
+                'message' => 'Access denied. Only HR or Admin can access payslips.',
+            ], 403);
         }
+
+        $employeeIds = Employee::query()
+            ->when($request->filled('employee_id'), fn ($q) => $q->where('id', $request->integer('employee_id')))
+            ->pluck('id')
+            ->all();
+
+        $this->ensureMonthlyPayslipsForEmployeeIds($employeeIds);
 
         $query = Payslip::query()
             ->with(['employee:id,user_id,employee_no,first_name,last_name,middle_name,position,employment_status', 'employee.department:id,name'])
             ->latest('period_end');
 
-        if ($actor->role === 'employee') {
-            $employee = $actor->employeeProfile;
-            if (! $employee) {
-                return response()->json([
-                    'data' => [],
-                ]);
-            }
-
-            $query->where('employee_id', $employee->id);
-        } elseif ($request->filled('employee_id')) {
+        if ($request->filled('employee_id')) {
             $query->where('employee_id', $request->integer('employee_id'));
         }
 
@@ -66,12 +57,6 @@ class PayslipController extends Controller
         }
 
         $payslip->load(['employee:id,user_id,employee_no,first_name,last_name,middle_name,position,employment_status', 'employee.department:id,name']);
-
-        if ($actor->role === 'employee' && (int) $payslip->employee?->user_id !== (int) $actor->id) {
-            return response()->json([
-                'message' => 'Access denied. Employees can only view their own payslips.',
-            ], 403);
-        }
 
         return response()->json([
             'data' => $payslip,

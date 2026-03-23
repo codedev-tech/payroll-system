@@ -7,8 +7,6 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\DepartmentController;
 use App\Http\Controllers\Api\V1\EmployeeController;
 use App\Http\Controllers\Api\V1\HrEmployeeAccountController;
-use App\Http\Controllers\Api\V1\LeaveRequestController;
-use App\Http\Controllers\Api\V1\LeaveTypeController;
 use App\Http\Controllers\Api\V1\PayslipController;
 use App\Http\Controllers\Api\V1\PayrollSettingController;
 use Illuminate\Support\Facades\Route;
@@ -30,19 +28,9 @@ Route::prefix('v1')->group(function (): void {
     Route::put('/employees/{employee}', [EmployeeController::class, 'update'])->middleware('hr_or_admin');
     Route::patch('/employees/{employee}', [EmployeeController::class, 'update'])->middleware('hr_or_admin');
 
-    Route::get('/leave-types', [LeaveTypeController::class, 'index']);
-    Route::post('/leave-types', [LeaveTypeController::class, 'store'])->middleware('hr_or_admin');
-
-    Route::get('/leave-requests', [LeaveRequestController::class, 'index']);
-    Route::post('/leave-requests', [LeaveRequestController::class, 'store']);
-    Route::post('/leave-requests/{leaveRequest}/approve', [LeaveRequestController::class, 'approve'])->middleware('hr_or_admin');
-    Route::post('/leave-requests/{leaveRequest}/reject', [LeaveRequestController::class, 'reject'])->middleware('hr_or_admin');
-
     Route::get('/attendance', [AttendanceController::class, 'index']);
     Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn'])->middleware('hr_or_admin');
     Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut'])->middleware('hr_or_admin');
-    Route::post('/attendance/kiosk/clock-in', [AttendanceController::class, 'kioskClockIn']);
-    Route::post('/attendance/kiosk/clock-out', [AttendanceController::class, 'kioskClockOut']);
 
     Route::get('/analytics/dashboard', [AnalyticsController::class, 'dashboard']);
     Route::get('/analytics/payroll', [AnalyticsController::class, 'payroll']);

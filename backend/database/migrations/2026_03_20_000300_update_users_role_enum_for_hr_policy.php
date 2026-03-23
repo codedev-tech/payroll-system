@@ -10,11 +10,11 @@ return new class extends Migration
     public function up(): void
     {
         DB::table('users')
-            ->whereNotIn('role', ['admin', 'hr', 'employee'])
-            ->update(['role' => 'employee']);
+            ->whereNotIn('role', ['admin', 'hr'])
+            ->update(['role' => 'hr']);
 
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('role', ['admin', 'hr', 'employee'])->default('employee')->change();
+            $table->enum('role', ['admin', 'hr'])->default('hr')->change();
         });
     }
 

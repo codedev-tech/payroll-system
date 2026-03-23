@@ -80,15 +80,6 @@ User::updateOrCreate(
     ]
 );
 
-User::updateOrCreate(
-    ['email' => 'employee@gmail.com'],
-    [
-        'name' => 'Employee User',
-        'password' => Hash::make('123456'),
-        'role' => 'employee',
-    ]
-);
-
         $this->command?->info('Seeded master data only (departments and leave types).');
     }
 }
