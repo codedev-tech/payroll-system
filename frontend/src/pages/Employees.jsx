@@ -147,6 +147,20 @@ export default function Employees() {
     });
   };
 
+  /**
+   * Refetch the employee list from the backend to ensure data is always in sync.
+   * This is called after successful employee creation or deletion.
+   */
+  const refetchEmployees = async () => {
+    try {
+      const response = await employeesApi.list({ limit: 100 });
+      const data = extractData(response);
+      setEmployees(Array.isArray(data) ? data : []);
+    } catch {
+      setError('Unable to refresh employee list. Please reload the page.');
+    }
+  };
+
   const handleCreateEmployeeAccount = async (event) => {
     event.preventDefault();
 
@@ -191,11 +205,12 @@ export default function Employees() {
 
     try {
       setSubmitting(true);
-      const response = await hrEmployeeAccountsApi.create(payload);
-      const data = extractData(response);
-      if (data?.employee) {
-        setEmployees((previous) => [data.employee, ...previous]);
-      }
+      await hrEmployeeAccountsApi.create(payload);
+      
+      // Refetch the entire employee list to ensure it's always in sync with the backend
+      // This prevents data loss when switching routes
+      await refetchEmployees();
+      
       setSubmitSuccess('Employee account created successfully.');
       resetForm();
       setShowCreateForm(false);
@@ -207,7 +222,10 @@ export default function Employees() {
   };
 
   const handleDeleteEmployee = async (employee) => {
-    const shouldDelete = window.confirm(`Offboard employee ${employee.full_name || employee.employee_no}?`);
+    // Warn user that this is a permanent deletion of employee and all related data
+    const shouldDelete = window.confirm(
+      `Permanently delete employee ${employee.full_name || employee.employee_no} and all related data (payslips, leave requests, etc.)?\n\nThis action cannot be undone.`
+    );
     if (!shouldDelete) {
       return;
     }
@@ -215,9 +233,11 @@ export default function Employees() {
     try {
       setDeletingEmployeeId(employee.id);
       await employeesApi.delete(employee.id);
-      setEmployees((previous) => previous.filter((item) => item.id !== employee.id));
+      
+      // Refetch the employee list to ensure it stays in sync with the backend
+      await refetchEmployees();
     } catch {
-      window.alert('Unable to offboard employee. Please try again.');
+      window.alert('Unable to delete employee. Please try again.');
     } finally {
       setDeletingEmployeeId(null);
     }
@@ -227,13 +247,14 @@ export default function Employees() {
     try {
       setUpdatingStatusEmployeeId(employee.id);
       await employeesApi.patch(employee.id, { employment_status: newStatus });
-      setEmployees((previous) =>
-        previous.map((emp) =>
-          emp.id === employee.id ? { ...emp, employment_status: newStatus } : emp
-        )
-      );
+      
+      // Refetch the employee list to ensure it stays in sync with the backend
+      // This ensures dashboard metrics are updated when status changes
+      await refetchEmployees();
     } catch (error) {
       window.alert(`Unable to update employee status. ${error?.response?.data?.message || ''}`);
+      // On error, still refetch to ensure local state matches backend
+      await refetchEmployees();
     } finally {
       setUpdatingStatusEmployeeId(null);
     }
