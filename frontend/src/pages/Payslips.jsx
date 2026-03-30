@@ -47,7 +47,7 @@ export default function Payslips() {
       isMounted = false;
     };
   }, []);
-
+  // Helper functions
   const currency = (value) => new Intl.NumberFormat('en-PH', {
     style: 'currency',
     currency: 'PHP',
