@@ -19,7 +19,8 @@ html, body {
 position: absolute;
   filter: drop-shadow(10px 8px 32px rgb(105, 155, 255)) !important;
   margin-top: 300px;
-  z-index: 999;
+  z-index: 0 !important;
+
 }
 
 /* Responsive adjustments */
@@ -163,7 +164,8 @@ position: absolute;
   margin-right: 0;
   max-height: 92vh;
   overflow: auto;
-
+  z-index: 999 !important;
+  position: relative;
 
 }
 
