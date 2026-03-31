@@ -20,8 +20,6 @@ COPY . /var/www/html
 
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-EXPOSE 80
-
+EXPOSE 10000
+RUN sed -i 's/80/10000/g' /etc/apache2/ports.conf /etc/apache2/sites-enabled/000-default.conf
 CMD ["apache2-foreground"]
