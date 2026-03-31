@@ -18,7 +18,7 @@ export default function Login() {
   const bubbles = useMemo(() => [
     { top: '-7%', left: '-3%', size: 200 },
     { top: '9%', left: '37%', size: 60 },
-    { top: '77%', left: '48%', size: 120 },
+    { top: '77%', left: '46%', size: 120 },
     { top: '90%', left: '95%', size: 180 },
     { top: '10%', left: '90%', size: 90 }
   ].map((b, i) => (

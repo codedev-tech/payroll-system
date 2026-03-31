@@ -116,7 +116,7 @@ position: absolute;
 .login-bubble {
   position: absolute;
   border-radius: 50%;
-  background: radial-gradient(circle at 60% 20%, #0059ff 60%, #ffb013 100%);
+  background: radial-gradient(circle at 60% 20%, #0059ff 50%, #d0f0f8 100%);
   opacity: 1;
   animation: float-bubble 1s infinite ease-in-out;
 }
@@ -258,7 +258,7 @@ position: absolute;
   width: 100%;
   padding: 0.95rem 0;
   border-radius: 0.8rem;
-  background: linear-gradient(90deg, #4f8cff 60%, #6ea8fe 100%);
+  background: linear-gradient(90deg, #4f8cff 60%);
   color: #fff;
   font-size: 1.1rem;
   font-weight: 600;
