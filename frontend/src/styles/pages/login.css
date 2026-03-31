@@ -1,8 +1,4 @@
 /* Modern animated login page styles */
-html, body {
-  height: 100vh;
-  overflow: hidden;
-}
 
 .login-root {
   min-height: 100vh;

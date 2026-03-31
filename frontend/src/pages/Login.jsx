@@ -63,7 +63,7 @@ export default function Login() {
   };
 
   return (
-    <div className="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light position-relative">
+    <div className="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light position-relative login-root">
       <div
         className="row w-100 justify-content-center align-items-center"
         style={{ minHeight: "100vh" }}
